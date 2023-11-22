@@ -1,10 +1,10 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose'
 import {
     Guardian,
     LocalGuardian,
     Student,
     UserName,
-} from './student/student.interface';
+} from './student/student.interface'
 
 const userNameSchema = new Schema<UserName>({
     firstName: {
@@ -18,7 +18,7 @@ const userNameSchema = new Schema<UserName>({
         type: String,
         required: true,
     },
-});
+})
 
 const guardianSchema = new Schema<Guardian>({
     fatherName: {
@@ -45,7 +45,7 @@ const guardianSchema = new Schema<Guardian>({
         type: String,
         required: true,
     },
-});
+})
 
 const localGuradianSchema = new Schema<LocalGuardian>({
     name: {
@@ -64,23 +64,44 @@ const localGuradianSchema = new Schema<LocalGuardian>({
         type: String,
         required: true,
     },
-});
+})
 
 const studentSchema = new Schema<Student>({
-    id: { type: String },
-    name: userNameSchema,
-    gender: ['male', 'female'],
-    dateOfBirth: { type: String },
-    email: { type: String, required: true },
+    id: { type: String, required: true, unique: true },
+    name: {
+        type: userNameSchema,
+        required: true,
+    },
+    gender: {
+        type: String,
+        enum: ['male', 'female', "others"],
+        required: true
+    },
+    dateOfBirth: { type: String, required: true },
+    email: { type: String, required: [true, "Email is required"] },
     contactNo: { type: String, required: true },
     emergencyContactNo: { type: String, required: true },
-    bloogGroup: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    bloodGroup: {
+        type: String,
+        enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+        required: true,
+    },
     presentAddress: { type: String, required: true },
     permanentAddres: { type: String, required: true },
-    guardian: guardianSchema,
-    localGuardian: localGuradianSchema,
+    guardian: {
+        type: guardianSchema,
+        required: true,
+    },
+    localGuardian: {
+        type: localGuradianSchema,
+        required: true,
+    },
     profileImg: { type: String },
-    isActive: ['active', 'blocked'],
-});
+    isActive: {
+        type: String,
+        enum: ['active', 'blocked'],
+        default: 'active',
+    },
+})
 
-export const StudentModel = model<Student>('Student', studentSchema);
+export const StudentModel = model<Student>('Student', studentSchema)
