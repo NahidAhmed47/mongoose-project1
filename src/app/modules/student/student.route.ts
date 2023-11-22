@@ -7,4 +7,6 @@ router.post("/create-student", StudentController.createStudent)
 
 router.get("/", StudentController.getStudentsFromDB)
 
+router.get("/:studentId", StudentController.getStudentById)
+
 export const StudentRoutes = router;

@@ -13,7 +13,14 @@ const getStudentsFromDB = async () => {
     return res;
 };
 
+// get student by student id
+const getStudentById = async (id: string) => {
+    const res = await StudentModel.findOne({ id });
+    return res;
+}
+
 export const StudentService = {
     createStudentToDB,
     getStudentsFromDB,
+    getStudentById,
 }
